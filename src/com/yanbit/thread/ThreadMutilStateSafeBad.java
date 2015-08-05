@@ -11,7 +11,7 @@ import com.yanbit.anno.Unsafe;
  * 
  * 
  */
-public class ThreadMutilState {
+public class ThreadMutilStateSafeBad {
 	// demo1
 	// Thread-0:set number:0
 	// Thread-0:set value:0
@@ -50,7 +50,7 @@ public class ThreadMutilState {
 	private AtomicReference<Integer> lastValue = new AtomicReference<Integer>();
 
 	@Unsafe
-	public Integer addOne(Integer value) {
+	public synchronized Integer addOne(Integer value) {
 		if (value.equals(lastNumber.get())) {
 			// if (false) {
 			System.out.println(Thread.currentThread().getName() + ":" + "if value:" + lastNumber.get());
@@ -64,7 +64,7 @@ public class ThreadMutilState {
 			lastNumber.set(value);
 			System.out.println(Thread.currentThread().getName() + ":" + "set number:" + value);
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -76,7 +76,7 @@ public class ThreadMutilState {
 
 	public static void main(String[] args) {
 		final Random r = new Random();
-		final ThreadMutilState t = new ThreadMutilState();
+		final ThreadMutilStateSafeBad t = new ThreadMutilStateSafeBad();
 		Thread one = new Thread() {
 			@Override
 			public void run() {

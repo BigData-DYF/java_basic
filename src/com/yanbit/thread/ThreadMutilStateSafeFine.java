@@ -11,7 +11,7 @@ import com.yanbit.anno.Unsafe;
  * 
  * 
  */
-public class ThreadMutilState {
+public class ThreadMutilStateSafeFine {
 	// demo1
 	// Thread-0:set number:0
 	// Thread-0:set value:0
@@ -49,34 +49,56 @@ public class ThreadMutilState {
 	private AtomicReference<Integer> lastNumber = new AtomicReference<Integer>();
 	private AtomicReference<Integer> lastValue = new AtomicReference<Integer>();
 
+	/**
+	 * 
+	 * synchronized two body
+	 * 
+	 * 
+	 * @param value
+	 * @return
+	 */
 	@Unsafe
 	public Integer addOne(Integer value) {
-		if (value.equals(lastNumber.get())) {
-			// if (false) {
-			System.out.println(Thread.currentThread().getName() + ":" + "if value:" + lastNumber.get());
-			return lastValue.get();
-		} else {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+
+		Integer param = null;
+
+		synchronized (this) {
+			if (value.equals(lastNumber.get())) {
+				// if (false) {
+				System.out.println(Thread.currentThread().getName() + ":" + "if value:" + lastNumber.get());
+				param = lastValue.get();
+				return param;
 			}
-			lastNumber.set(value);
-			System.out.println(Thread.currentThread().getName() + ":" + "set number:" + value);
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			lastValue.set(value + 1);
-			System.out.println(Thread.currentThread().getName() + ":" + "set value:" + value);
-			return value + 1;
 		}
+
+		if (param == null) {
+			synchronized (this) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				lastNumber.set(value);
+				System.out.println(Thread.currentThread().getName() + ":" + "set number:" + value);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				lastValue.set(value + 1);
+				System.out.println(Thread.currentThread().getName() + ":" + "set value:" + value);
+				param = value + 1;
+				return param;
+			}
+
+		}
+		return param;
+
 	}
 
 	public static void main(String[] args) {
 		final Random r = new Random();
-		final ThreadMutilState t = new ThreadMutilState();
+		final ThreadMutilStateSafeFine t = new ThreadMutilStateSafeFine();
 		Thread one = new Thread() {
 			@Override
 			public void run() {
