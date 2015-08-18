@@ -1,10 +1,10 @@
 
 package com.yanbit.thread;
 
+import com.yanbit.anno.Unsafe;
+
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
-
-import com.yanbit.anno.Unsafe;
 
 /**
  * @author yanbit

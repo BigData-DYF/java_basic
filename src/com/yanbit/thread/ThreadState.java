@@ -1,8 +1,8 @@
 package com.yanbit.thread;
 
-import java.util.Random;
-
 import com.yanbit.anno.Unsafe;
+
+import java.util.Random;
 
 public class ThreadState {
 	

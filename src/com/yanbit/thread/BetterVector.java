@@ -18,4 +18,5 @@ public class BetterVector<E> extends Vector<E> {
 		}
 		return absent;
 	}
+
 }

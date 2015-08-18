@@ -1,8 +1,8 @@
 package com.yanbit.thread;
 
-import java.util.Random;
-
 import com.yanbit.anno.safe;
+
+import java.util.Random;
 
 public class ThreadStateless {
 	
